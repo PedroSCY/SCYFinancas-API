@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.Project.SCYFinancas.exceptions.RegraDeNegocioException;
 import com.Project.SCYFinancas.model.entity.Lancamento;
 import com.Project.SCYFinancas.model.enums.StatusLancamento;
+import com.Project.SCYFinancas.model.enums.TipoLancamento;
 import com.Project.SCYFinancas.model.repository.LancamentoRepository;
 import com.Project.SCYFinancas.service.LancamentoService;
 
@@ -73,7 +74,7 @@ public class LancamentoServiceImpl implements LancamentoService {
 			throw new RegraDeNegocioException("Informe uma Descrição válida");
 		}
 		
-		if(lancamento.getMes() == null || lancamento.getMes() <= 1 || lancamento.getMes() > 12) {
+		if(lancamento.getMes() == null || lancamento.getMes() < 1 || lancamento.getMes() > 12) {
 			throw new RegraDeNegocioException("Informe um Mês válido");
 		}
 		
@@ -98,6 +99,23 @@ public class LancamentoServiceImpl implements LancamentoService {
 	@Override
 	public Optional<Lancamento> obterPorId(Long id) {
 		return repository.findById(id);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public BigDecimal obterSaldoPorUsuario(Long id) {
+		BigDecimal receitas = repository.ObterSaldoPorTipoLancamentoEUsuario(id, TipoLancamento.RECEITA);
+		BigDecimal despesas = repository.ObterSaldoPorTipoLancamentoEUsuario(id, TipoLancamento.DESPESA);
+				
+		if(receitas == null) {
+			receitas = BigDecimal.ZERO;
+		}
+		
+		if(despesas == null) {
+			despesas = BigDecimal.ZERO;
+		}
+		
+		return receitas.subtract(despesas);
 	}
 
 }

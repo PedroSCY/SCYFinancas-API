@@ -1,5 +1,6 @@
 package com.Project.SCYFinancas.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,4 +22,7 @@ public interface LancamentoService {
 	public void validar(Lancamento lancamento);
 	
 	public Optional<Lancamento> obterPorId(Long id);
+	
+	BigDecimal obterSaldoPorUsuario(Long id);
+	
 }

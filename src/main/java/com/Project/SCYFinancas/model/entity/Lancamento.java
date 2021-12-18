@@ -27,7 +27,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
-@Table( name = "lancamento", schema = "finacas")
+@Table( name = "lancamento", schema = "financas")
 @Data
 @Builder
 @NoArgsConstructor
