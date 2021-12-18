@@ -1,6 +1,7 @@
 package com.Project.SCYFinancas.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.Project.SCYFinancas.model.entity.Lancamento;
 import com.Project.SCYFinancas.model.enums.StatusLancamento;
@@ -18,4 +19,6 @@ public interface LancamentoService {
 	public void atualizarStatus(Lancamento lancamento, StatusLancamento status);
 	
 	public void validar(Lancamento lancamento);
+	
+	public Optional<Lancamento> obterPorId(Long id);
 }

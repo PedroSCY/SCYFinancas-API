@@ -17,9 +17,10 @@ import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 import com.Project.SCYFinancas.model.enums.StatusLancamento;
 import com.Project.SCYFinancas.model.enums.TipoLancamento;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -29,6 +30,8 @@ import javax.persistence.ManyToOne;
 @Table( name = "lancamento", schema = "finacas")
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Lancamento {
 	
 	@Id
