@@ -3,8 +3,12 @@ package com.Project.SCYFinancas.api.controller;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+import java.math.BigDecimal;
+import java.util.Optional;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -43,6 +47,7 @@ public class UsuarioControllerTest {
 	
 	@MockBean
 	private LancamentoService lancamentoService;
+	
 	
 	@Test
 	public void deveAutenticarUmUsuario() throws Exception {
@@ -139,6 +144,40 @@ public class UsuarioControllerTest {
 		.andExpect( MockMvcResultMatchers.status().isBadRequest());
 	}
 	
+	@Test
+	public void deveObterOSaldoDeUmUsuario() throws Exception {
+		
+		BigDecimal saldo = BigDecimal.valueOf(10);
+		Usuario usuario = Usuario.builder().id(1l).email("usuario@user.com").senha( "senha").build();
+		when(service.obterPorId(1L)).thenReturn(Optional.of(usuario));
+		when(lancamentoService.obterSaldoPorUsuario(1l)).thenReturn(saldo);
+		
+		MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+													.get(API.concat("/1/saldo"))
+													.accept(JSON)
+													.contentType(JSON);
+				
+		mvc
+		.perform(request)
+		.andExpect( MockMvcResultMatchers.status().isOk())
+		.andExpect( MockMvcResultMatchers.content().string("10"));
+		
+	}
+	
+	@Test
+	public void deveRetornarNotFoundQuandoOUsuarioNaoExistirParaPegarOSaldo() throws Exception {
+		
+	when(service.obterPorId(1l)).thenReturn(Optional.empty());
+		
+		
+		MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+													.get( API.concat("/1/saldo")  )
+													.accept( JSON )
+													.contentType( JSON );
+		mvc
+			.perform(request)
+			.andExpect( MockMvcResultMatchers.status().isNotFound() );
+	}
 	
 	
 }

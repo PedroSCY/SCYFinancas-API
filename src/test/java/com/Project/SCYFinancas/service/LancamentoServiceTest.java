@@ -41,6 +41,7 @@ public class LancamentoServiceTest {
 	
 	@Test
 	public void deveSalvarUmlancamento() {
+		
 		Lancamento lancamento = LancamentoRepositoryTest.criarLancamento();
 		doNothing().when(service).validar(lancamento);
 		
